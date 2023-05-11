@@ -1,0 +1,180 @@
+syntax = "proto3";
+package user_service_proto;
+
+message OrganisationData{
+    bool valid = 1;
+    string id = 2;
+    string slug = 3;
+    string name = 4;
+    string description = 5;
+    string email = 6;
+    string phone_number = 7;
+    string ccode = 8;
+    string image = 9;
+    string website = 10;
+    string address = 11;
+    string identifier = 12;
+    string registration_id = 13;
+}
+
+message OrganisationSettings{
+    bool valid = 1;
+    string id = 2;
+    string country = 3;
+    string currency = 4;
+    string ccode = 5;
+    string timezone = 6;
+    string dateformat = 7;
+    string timeformat = 8;
+    string slot_duration = 9;
+}
+
+message ArrayofTimes{
+    string start = 1;
+    string end = 2;   
+}
+
+message ArrayOfSlots{
+    repeated ArrayofTimes slots = 1;
+}
+  
+message WorkingHours{
+    bool valid = 1;
+    string id = 2;
+    ArrayOfSlots monday = 3;
+    ArrayOfSlots tuesday = 4;
+    ArrayOfSlots wednesday = 5;
+    ArrayOfSlots thursday = 6;
+    ArrayOfSlots friday = 7;
+    ArrayOfSlots saturday = 8;
+    ArrayOfSlots sunday = 9;
+}
+
+message ArrayOfLocations{
+    string id = 1;
+    string name = 2;
+    string location = 3;
+    bool status = 4;
+}
+  
+message OrganisationLocations{
+    bool valid = 1;
+    string id = 2;
+    repeated ArrayOfLocations locations = 3;
+}
+
+message OrganisationStaffs{
+    bool valid = 1;
+    string id = 2;
+    repeated UserData staffs = 3; 
+}
+
+message UserData{
+    bool valid = 1;
+    string id = 2;
+    string fname = 3;
+    string lname = 4;
+    string username = 5;
+    string email = 6;
+    string phone_number = 7;
+    string ccode = 8;
+    string image = 9;
+    string utype = 10;
+    bool status = 11;
+    string organisation = 12;
+    optional OrganisationData organisation_data = 13;
+    optional UserAdditionalData user_additional_data = 14;
+    optional UserPermissions user_permissions = 15;
+    optional WorkingHours user_working_hours = 16;
+}
+
+message IdNameData {
+    string id = 1;
+    string name = 2;
+}
+message UserAdditionalData{
+    optional bool valid = 1;
+    optional string id = 2;
+    string date_of_birth = 3;
+    string gender = 4;
+    string designation = 5;
+    string specialisation = 6;
+    string age = 7;
+    string experience = 8;
+    string qualification = 9;
+    string description = 10;
+    optional IdNameData under = 11;
+    optional IdNameData role = 12;
+    optional IdNameData department = 13;
+}
+
+message UserWorkingHours{
+    optional bool valid = 1;
+    optional string id = 2;
+    repeated ArrayOfSlots monday = 3;
+    repeated ArrayOfSlots tuesday = 4;
+    repeated ArrayOfSlots wednesday = 5;
+    repeated ArrayOfSlots thursday = 6;
+    repeated ArrayOfSlots friday = 7;
+    repeated ArrayOfSlots saturday = 8;
+    repeated ArrayOfSlots sunday = 9;
+}
+
+message UserAddress{
+    optional bool valid = 1;
+    string id = 2;
+    string name = 3;
+    string latitude = 4;
+    string longitude = 5;
+    string contact_person_name = 6;
+    string contact_person_phone = 7;
+    string address_one = 8;
+    string address_two = 9;
+    string city = 10;
+    string state = 11;
+    string country = 12;
+    string zipcode = 13;
+    bool status = 14;
+}
+  
+message UserAddressArray{
+    bool valid = 1;
+    string user = 2;
+    repeated UserAddress address_list = 3;
+}
+
+message UserPermissions{
+    bool valid = 1;
+    string user = 2;
+    string name = 3;
+    string permissions = 4;
+    bool status = 5;
+}
+
+
+message IdItem{
+    string id = 1;
+}
+
+message UserItem{
+    string id = 1;
+    bool organisation = 2;
+    bool user_additional = 3;
+    bool user_permissions = 4;
+    bool user_working_hours = 5;
+}
+
+
+service UserServices {
+    rpc GetOrganisation(IdItem) returns (OrganisationData) {}
+    rpc GetOrganisationSettings(IdItem) returns (OrganisationSettings) {}
+    rpc GetOrganisationWorkingHours(IdItem) returns (WorkingHours) {}
+    rpc GetOrganisationLocations(IdItem) returns (OrganisationLocations) {}
+    rpc GetOrganisationStaff(IdItem) returns (OrganisationStaffs) {}
+
+    rpc GetUserData(UserItem) returns (UserData) {}
+    rpc GetUserAdditionalData(IdItem) returns (UserAdditionalData) {}
+    rpc GetUserWorkingHours(IdItem) returns (WorkingHours) {}
+    rpc GetUserAddress(IdItem) returns (UserAddressArray) {}
+    rpc GetUserPermissions(IdItem) returns (UserPermissions) {}
+}
